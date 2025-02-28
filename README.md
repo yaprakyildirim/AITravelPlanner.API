@@ -42,67 +42,7 @@ AITravelPlanner/
  ├── AITravelPlanner.Frontend/    # React or Next.js (Optional)
 ```
 
----
 
-## 🛠️ Setup & Installation
-### 1️⃣ **Clone the Repository**
-```bash
-git clone https://github.com/yaprakyildirim/AITravelPlanner.API.git
-cd AITravelPlanner.API
-```
-
-### 2️⃣ **Set Up Environment Variables**
-Create an `.env` file in the root directory and add:
-```env
-DATABASE_URL= "Host=localhost;Database=ai_travel;Username=postgres;Password=yourpassword"
-JWT_SECRET= "your_jwt_secret_key"
-```
-
-### 3️⃣ **Install Dependencies**
-```bash
-dotnet restore
-dotnet build
-```
-
-### 4️⃣ **Database Migration**
-```bash
-dotnet ef database update
-```
-
-### 5️⃣ **Run the API**
-```bash
-dotnet run
-```
-
-API will be available at: `http://localhost:5000`
-
-### 6️⃣ **Swagger UI (API Docs)**
-After running the API, open your browser and go to:
-```
-http://localhost:5000/swagger/index.html
-```
-
----
-
-## 📌 Running Tests
-```bash
-dotnet test
-```
-
----
-
-## 🛠️ CI/CD Pipeline (To Be Added)
-We will integrate GitHub Actions for:
-- ✅ Automated Tests on Pull Requests
-- ✅ Deployment to Cloud/Docker
-- ✅ Code Quality Checks
-
----
-
-## 📜 License
-This project is licensed under the **MIT License**.
-
----
 
 ## 👨‍💻 Contributors
 - **[Yaprak Yıldırım](https://github.com/yaprakyildirim)** - Maintainer
