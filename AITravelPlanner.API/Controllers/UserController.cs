@@ -3,6 +3,7 @@ using AITravelPlanner.API.Models.Responses;
 using AITravelPlanner.Services.Services.Abstract;
 using AITravelPlanner.Services.Services.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using RegisterRequest = AITravelPlanner.API.Models.Requests.RegisterRequest;
 
 namespace AITravelPlanner.API.Controllers
@@ -31,13 +32,16 @@ namespace AITravelPlanner.API.Controllers
             var user = await _userService.AuthenticateUserAsync(request.Email, request.Password);
             if (user == null) return Unauthorized("Geçersiz e-posta veya şifre");
 
-            return Ok(new UserResponse { Id = user.Id, Name = user.Name, Email = user.Email });
+            var token = await _userService.GenerateJwtToken(user);
+            return Ok(new { Token = token });
         }
 
         [HttpGet("GetByUserId")]
-        public async Task<IActionResult> GetUserInfo([FromQuery] int userId)
+        public async Task<IActionResult> GetUserInfo()
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var user = await _userService.GetUserByIdAsync(userId);
+
             if (user == null)
             {
                 return NotFound(new { message = "User not found" });
@@ -45,6 +49,5 @@ namespace AITravelPlanner.API.Controllers
 
             return Ok(new UserResponse { Id = user.Id, Name = user.Name, Email = user.Email });
         }
-
     }
 }
