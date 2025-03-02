@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Abstract\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\AITravelPlanner.Data\AITravelPlanner.Data.csproj" />
   </ItemGroup>
 

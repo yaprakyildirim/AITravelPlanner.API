@@ -1,10 +1,17 @@
 using AITravelPlanner.Data;
+using AITravelPlanner.Services.Services.Abstract;
+using AITravelPlanner.Services.Services.Concrete;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IFlightService, FlightService>();
+
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

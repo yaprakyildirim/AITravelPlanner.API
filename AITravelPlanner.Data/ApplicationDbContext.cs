@@ -10,6 +10,7 @@ namespace AITravelPlanner.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Travel> Travels { get; set; }
         public DbSet<Activity> Activities { get; set; }
+        public DbSet<Flight> Flights { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

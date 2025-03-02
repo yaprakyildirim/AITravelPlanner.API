@@ -1,5 +1,6 @@
 ﻿using AITravelPlanner.API.Models.Requests;
 using AITravelPlanner.API.Models.Responses;
+using AITravelPlanner.Services.Services.Abstract;
 using AITravelPlanner.Services.Services.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using RegisterRequest = AITravelPlanner.API.Models.Requests.RegisterRequest;
@@ -10,9 +11,9 @@ namespace AITravelPlanner.API.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public UserController(UserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
@@ -32,5 +33,18 @@ namespace AITravelPlanner.API.Controllers
 
             return Ok(new UserResponse { Id = user.Id, Name = user.Name, Email = user.Email });
         }
+
+        [HttpGet("GetByUserId")]
+        public async Task<IActionResult> GetUserInfo([FromQuery] int userId)
+        {
+            var user = await _userService.GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+
+            return Ok(new UserResponse { Id = user.Id, Name = user.Name, Email = user.Email });
+        }
+
     }
 }
