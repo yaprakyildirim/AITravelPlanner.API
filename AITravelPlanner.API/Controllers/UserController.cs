@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
+﻿using AITravelPlanner.API.Models.Requests;
+using AITravelPlanner.API.Models.Responses;
+using AITravelPlanner.Services.Services.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using RegisterRequest = AITravelPlanner.API.Models.Requests.RegisterRequest;
 
 namespace AITravelPlanner.API.Controllers
 {
@@ -7,22 +10,27 @@ namespace AITravelPlanner.API.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterRequest model)
+        private readonly UserService _userService;
+
+        public UserController(UserService userService)
         {
-            return Ok(new { message = "Kullanıcı başarıyla kaydedildi!" });
+            _userService = userService;
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        {
+            var user = await _userService.RegisterUserAsync(request.Name, request.SurName, request.UserName, request.Email, request.Password);
+            return Ok(new UserResponse { Id = user.Id, Name = user.Name, SurName = user.SurName, UserName = user.UserName, Email = user.Email });
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest model)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            return Ok(new { token = "fake-jwt-token" });
-        }
+            var user = await _userService.AuthenticateUserAsync(request.Email, request.Password);
+            if (user == null) return Unauthorized("Geçersiz e-posta veya şifre");
 
-        [HttpGet("profile")]
-        public IActionResult GetUserProfile()
-        {
-            return Ok(new { id = 1, name = "Yaprak Yıldırım", email = "yaprak@ai.com" });
+            return Ok(new UserResponse { Id = user.Id, Name = user.Name, Email = user.Email });
         }
     }
 }
